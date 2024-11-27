@@ -33,6 +33,20 @@ app.delete("/delete/:id", async (req, res) => {
   res.status(200);
 });
 
+app.put("delete/:id", async (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  const newTodo = prisma.toDo.update({
+    where: {
+      id: parseInt(id),
+    },
+    data: {
+      title: title,
+    },
+  });
+  res.status(200).json(newTodo);
+});
+
 app.listen(3000, () => {
   console.log("Server is running on PORT 3000");
 });
