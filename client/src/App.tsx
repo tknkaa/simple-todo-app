@@ -25,15 +25,22 @@ function App() {
     fetchTodos();
   }, []);
   const handleSubmit = async () => {
-    const res = await fetch(`${apiUrl}/todo`, {
-      method: "post",
-      body: JSON.stringify({ title: input }),
-      headers: { "Content-Type": "application/json" },
-      mode: "cors",
-    });
-    const newTodo = await res.json();
-    setToDos((prev) => [...prev, newTodo]);
-    setInput("");
+    try {
+      const res = await fetch(`${apiUrl}/todo`, {
+        method: "post",
+        body: JSON.stringify({ title: input }),
+        headers: { "Content-Type": "application/json" },
+        mode: "cors",
+      });
+      if (!res.ok) {
+        throw new Error(`Error: ${res.statusText}`);
+      }
+      const newTodo = await res.json();
+      setToDos((prev) => [...prev, newTodo]);
+      setInput("");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleDelete = async (id: number) => {
