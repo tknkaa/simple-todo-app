@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
     const fetchTodos = async () => {
-      const res = await fetch(`${apiUrl}/`, {
+      const res = await fetch(`${apiUrl}/todo`, {
         headers: { "Content-Type": "application/json" },
         mode: "cors",
       });
@@ -25,7 +25,7 @@ function App() {
     fetchTodos();
   }, []);
   const handleSubmit = async () => {
-    const res = await fetch(`${apiUrl}/create`, {
+    const res = await fetch(`${apiUrl}/todo`, {
       method: "post",
       body: JSON.stringify({ title: input }),
       headers: { "Content-Type": "application/json" },
@@ -39,14 +39,14 @@ function App() {
   const handleDelete = async (id: number) => {
     setToDos((prev) => prev.filter((todo) => todo.id != id));
     console.log(`deleted ID: ${id}`);
-    await fetch(`${apiUrl}/delete/${id}`, {
+    await fetch(`${apiUrl}/todo/${id}`, {
       method: "DELETE",
       mode: "cors",
     });
   };
 
   const handleEdit = async (id: number, title: string) => {
-    await fetch(`${apiUrl}/update/${id}`, {
+    await fetch(`${apiUrl}/todo/${id}`, {
       method: "PUT",
       mode: "cors",
       body: JSON.stringify({ title }),

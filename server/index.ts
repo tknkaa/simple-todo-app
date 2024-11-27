@@ -8,12 +8,12 @@ const prisma = new PrismaClient();
 app.use(express.json());
 app.use(cors());
 
-app.get("/", async (req, res) => {
+app.get("/todo", async (req, res) => {
   const todos = await prisma.toDo.findMany();
   res.json(todos);
 });
 
-app.post("/create", async (req, res) => {
+app.post("/todo", async (req, res) => {
   const { title } = req.body;
   const newTodo = await prisma.toDo.create({
     data: {
@@ -23,7 +23,7 @@ app.post("/create", async (req, res) => {
   res.status(201).json(newTodo);
 });
 
-app.delete("/delete/:id", async (req, res) => {
+app.delete("/todo/:id", async (req, res) => {
   const { id } = req.params;
   await prisma.toDo.delete({
     where: {
@@ -33,7 +33,7 @@ app.delete("/delete/:id", async (req, res) => {
   res.status(200);
 });
 
-app.put("/update/:id", async (req, res) => {
+app.put("/todo/:id", async (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
   const newTodo = await prisma.toDo.update({
