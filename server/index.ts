@@ -13,6 +13,16 @@ app.get("/", async (req, res) => {
   res.json(todos);
 });
 
+app.post("/create", async (req, res) => {
+  const { title } = req.body;
+  const newTodo = await prisma.toDo.create({
+    data: {
+      title: title,
+    },
+  });
+  res.status(201).json(newTodo);
+});
+
 app.listen(3000, () => {
   console.log("Server is running on PORT 3000");
 });
