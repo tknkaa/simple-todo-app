@@ -7,10 +7,11 @@ type ToDo = {
 };
 
 function App() {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [toDos, setToDos] = useState<ToDo[]>([]);
   useEffect(() => {
     const fetchTodos = async () => {
-      const res = await fetch("http://localhost:3000/", {
+      const res = await fetch(`${apiUrl}`, {
         headers: { "Content-Type": "application/json" },
         mode: "cors",
       });
