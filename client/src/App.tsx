@@ -9,6 +9,7 @@ type ToDo = {
 function App() {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [toDos, setToDos] = useState<ToDo[]>([]);
+  const [input, setInput] = useState<string>("");
   useEffect(() => {
     const fetchTodos = async () => {
       const res = await fetch(`${apiUrl}`, {
@@ -20,6 +21,17 @@ function App() {
     };
     fetchTodos();
   }, []);
+  const handleSubmit = async () => {
+    const res = await fetch(`${apiUrl}create`, {
+      method: "post",
+      body: JSON.stringify({ title: input }),
+      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+    });
+    const newTodo = await res.json();
+    setToDos((prev) => [...prev, newTodo]);
+    setInput("");
+  };
   return (
     <>
       <ul>
@@ -27,6 +39,13 @@ function App() {
           return <li key={todo.id}>{todo.title}</li>;
         })}
       </ul>
+      <input
+        value={input}
+        onChange={(e) => {
+          setInput(e.target.value);
+        }}
+      />
+      <button onClick={handleSubmit}>追加</button>
     </>
   );
 }
