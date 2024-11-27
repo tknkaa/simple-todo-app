@@ -1,8 +1,14 @@
 {
   "name": "simple-todo-app",
   "module": "index.ts",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && bun run index.ts",
+    "client": "cd client && bun run dev"
+  },
   "devDependencies": {
     "@types/bun": "latest",
+    "concurrently": "^9.1.0",
     "just": "^0.1.8",
     "prettier": "^3.4.1"
   },
