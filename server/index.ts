@@ -33,10 +33,10 @@ app.delete("/delete/:id", async (req, res) => {
   res.status(200);
 });
 
-app.put("delete/:id", async (req, res) => {
+app.put("/update/:id", async (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
-  const newTodo = prisma.toDo.update({
+  const newTodo = await prisma.toDo.update({
     where: {
       id: parseInt(id),
     },

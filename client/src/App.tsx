@@ -10,9 +10,12 @@ function App() {
   const apiUrl = import.meta.env.VITE_API_URL;
   const [toDos, setToDos] = useState<ToDo[]>([]);
   const [input, setInput] = useState<string>("");
+  const [editToDo, setEditToDo] = useState<ToDo | null>(null);
+  const [editInput, setEditInput] = useState<string>("");
+
   useEffect(() => {
     const fetchTodos = async () => {
-      const res = await fetch(`${apiUrl}`, {
+      const res = await fetch(`${apiUrl}/`, {
         headers: { "Content-Type": "application/json" },
         mode: "cors",
       });
@@ -22,7 +25,7 @@ function App() {
     fetchTodos();
   }, []);
   const handleSubmit = async () => {
-    const res = await fetch(`${apiUrl}create`, {
+    const res = await fetch(`${apiUrl}/create`, {
       method: "post",
       body: JSON.stringify({ title: input }),
       headers: { "Content-Type": "application/json" },
@@ -35,10 +38,26 @@ function App() {
 
   const handleDelete = async (id: number) => {
     setToDos((prev) => prev.filter((todo) => todo.id != id));
-    await fetch(`${apiUrl}delete/${id}`, {
+    console.log(`deleted ID: ${id}`);
+    await fetch(`${apiUrl}/delete/${id}`, {
       method: "DELETE",
       mode: "cors",
     });
+  };
+
+  const handleEdit = async (id: number, title: string) => {
+    await fetch(`${apiUrl}/update/${id}`, {
+      method: "PUT",
+      mode: "cors",
+      body: JSON.stringify({ title }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    setToDos([
+      ...toDos.map((todo) =>
+        todo.id !== id ? todo : { id: id, title: title },
+      ),
+    ]);
   };
 
   return (
@@ -47,8 +66,34 @@ function App() {
         {toDos.map((todo) => {
           return (
             <>
-              <li key={todo.id}>{todo.title}</li>
-              <button onClick={() => handleDelete(todo.id)}>削除</button>
+              <li key={todo.id}>
+                {todo === editToDo ? (
+                  <>
+                    <input
+                      value={editInput}
+                      onChange={(e) => setEditInput(e.target.value)}
+                    />
+                    <button onClick={() => handleEdit(todo.id, editInput)}>
+                      更新
+                    </button>
+                    <button onClick={() => setEditToDo(null)}>
+                      キャンセル
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <span>{todo.title}</span>
+                    <button onClick={() => handleDelete(todo.id)}>削除</button>
+                    <button
+                      onClick={() => {
+                        setEditToDo(todo), setEditInput(todo.title);
+                      }}
+                    >
+                      編集
+                    </button>
+                  </>
+                )}
+              </li>
             </>
           );
         })}
