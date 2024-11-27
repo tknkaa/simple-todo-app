@@ -6,3 +6,6 @@ format:
 
 dev:
  bun run dev
+
+install:
+ bun run install
