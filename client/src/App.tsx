@@ -32,11 +32,25 @@ function App() {
     setToDos((prev) => [...prev, newTodo]);
     setInput("");
   };
+
+  const handleDelete = async (id: number) => {
+    setToDos((prev) => prev.filter((todo) => todo.id != id));
+    await fetch(`${apiUrl}delete/${id}`, {
+      method: "DELETE",
+      mode: "cors",
+    });
+  };
+
   return (
     <>
       <ul>
         {toDos.map((todo) => {
-          return <li key={todo.id}>{todo.title}</li>;
+          return (
+            <>
+              <li key={todo.id}>{todo.title}</li>
+              <button onClick={() => handleDelete(todo.id)}>削除</button>
+            </>
+          );
         })}
       </ul>
       <input
