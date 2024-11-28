@@ -4,8 +4,19 @@ hello:
 format:
  bunx prettier . --write
 
-dev:
- bun run dev
-
 install:
- bun run install
+ bun install
+ just install-client
+ just install-server
+
+install-client:
+ cd client && bun install
+
+install-server:
+ cd server && bun install
+
+start-client:
+ cd client && bun run dev
+
+start-server:
+ cd server && bun run index.ts

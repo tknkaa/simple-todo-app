@@ -1,18 +1,8 @@
 {
   "name": "simple-todo-app",
   "module": "index.ts",
-  "scripts": {
-    "dev": "concurrently \"bun run server\" \"bun run client\"",
-    "server": "cd server && bun run index.ts",
-    "client": "cd client && bun run dev",
-    "install": "concurrently \"bun run install-client\" \"bun run install-server\"",
-    "install-client": "cd client && bun install",
-    "install-server": "cd server && bun install"
-  },
   "devDependencies": {
     "@types/bun": "latest",
-    "concurrently": "^9.1.0",
-    "just": "^0.1.8",
     "prettier": "^3.4.1"
   },
   "peerDependencies": {
