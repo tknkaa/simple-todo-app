@@ -20,3 +20,6 @@ start-client:
 
 start-server:
  cd server && bun run index.ts
+
+dev:
+ trap 'kill 0' EXIT; (just start-server) & (just start-client) & wait
